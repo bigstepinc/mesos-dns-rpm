@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -o errexit -o nounset -o pipefail
+function -h {
+cat <<USAGE
+ USAGE: mesos-dns-init-wrapper
+
+  Run Mesos DNS, loading configuration files and setting up logging.
+
+  To configure Mesos DNS modify the /etc/mesos-dns/config.json
+  configuration file.
+USAGE
+}; function --help { -h ;} # A nice way to handle -h and --help
+export LC_ALL=en_US.UTF-8 # A locale that works consistently
+
+# Send all output to syslog and tag with PID and executable basename.
+function logged {
+  local tag="${1##*/}[$$]"
+  exec 1> >(exec logger -p user.info -t "$tag")
+  exec 2> >(exec logger -p user.err  -t "$tag")
+  exec "$@"
+}
+
+if [[ "${args[@]:-}" == *'--no-logger'* ]]
+  then
+    /usr/sbin/mesos-dns -config=/etc/mesos-dns/config.json
+  else
+    logged /usr/sbin/mesos-dns -config=/etc/mesos-dns/config.json
+fi
