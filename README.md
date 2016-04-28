@@ -17,5 +17,5 @@ $ wget https://github.com/bigstepinc/mesos-dns-rpm/blob/master/config.json $buil
 $ wget https://github.com/mesosphere/mesos-dns/archive/v0.5.2.tar.gz -O $build_root/SOURCES/v0.5.2.tar.gz
 $ wget https://storage.googleapis.com/golang/go1.6.2.linux-amd64.tar.gz -O $build_root/SOURCES/go1.6.2.linux-amd64.tar.gz
 
-rpmbuild -bb $build_root/SPECS/mesos-dns.spec
+$ rpmbuild -bb $build_root/SPECS/mesos-dns.spec
 ```
